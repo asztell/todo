@@ -4,7 +4,6 @@
   "rules": {
     "comma-dangle": ["error", "always-multiline"],
     "object-curly-spacing": ["error", "always"],
-    "jsx-quotes": ["error", "prefer-single"],
-    "singleQuote": 2
+    "jsx-quotes": ["error", "prefer-single"]
   }
 }
