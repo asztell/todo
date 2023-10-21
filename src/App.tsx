@@ -8,14 +8,8 @@ import {
   useColorScheme,
   View,
 } from 'react-native';
-
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
+import { Header } from './components';
+import { Colors } from './global.styles';
 import { styles } from './App.styles';
 
 type SectionProps = PropsWithChildren<{
@@ -48,7 +42,7 @@ function Section({ children, title }: SectionProps): JSX.Element {
   );
 }
 
-function App(): JSX.Element {
+export function App(): JSX.Element {
   const isDarkMode = useColorScheme() === 'dark';
 
   const backgroundStyle = {
@@ -73,20 +67,8 @@ function App(): JSX.Element {
             Edit <Text style={styles.highlight}>App.tsx</Text> to change this
             screen and then come back to see your edits.
           </Section>
-          <Section title='See Your Changes'>
-            <ReloadInstructions />
-          </Section>
-          <Section title='Debug'>
-            <DebugInstructions />
-          </Section>
-          <Section title='Learn More'>
-            Read the docs to discover what to do next:
-          </Section>
-          <LearnMoreLinks />
         </View>
       </ScrollView>
     </SafeAreaView>
   );
 }
-
-export default App;
