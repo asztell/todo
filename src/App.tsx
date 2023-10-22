@@ -1,74 +1,95 @@
-import React from 'react';
-import type { PropsWithChildren } from 'react';
+import React, { useState } from 'react';
 import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
+  FlatList,
   Text,
-  useColorScheme,
+  TextInput,
+  TouchableOpacity,
   View,
 } from 'react-native';
-import { Header } from './components';
-import { Colors } from './global.styles';
+import { CheckBox } from './components';
+// import { Header } from './components';
+// import { Colors } from './global.styles';
 import { styles } from './App.styles';
 
-type SectionProps = PropsWithChildren<{
-  title: string;
-}>;
-
-function Section({ children, title }: SectionProps): JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
-  return (
-    <View style={styles.sectionContainer}>
-      <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: isDarkMode ? Colors.white : Colors.black,
-          },
-        ]}>
-        {title}
-      </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}>
-        {children}
-      </Text>
-    </View>
-  );
-}
-
 export function App(): JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
+  type Task = { name: string; checked: boolean };
 
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
+  const [taskName, setTaskName] = useState('');
+  const [tasks, setTasks] = useState<Task[]>([]);
+  const [editIndex, setEditIndex] = useState(-1);
+
+  const handleAddTask = () => {
+    if (taskName) {
+      if (editIndex !== -1) {
+        const updatedTasks = [...tasks] as Array<{
+          name: string;
+          checked: boolean;
+        }>;
+        updatedTasks[editIndex] = { name: taskName, checked: false };
+        setTasks(updatedTasks);
+        setEditIndex(-1);
+      } else {
+        setTasks([...tasks, { name: taskName, checked: false }]);
+      }
+      setTaskName('');
+    }
   };
 
+  const handleEditTask = (index: number) => {
+    const taskToEdit = tasks[index];
+    setTaskName(taskToEdit.name);
+    setEditIndex(index);
+  };
+
+  const handleDeleteTask = (index: number) => {
+    const updatedTasks = [...tasks];
+    updatedTasks.splice(index, 1);
+    setTasks(updatedTasks);
+  };
+
+  const onPress = (name: string) => {
+    const updatedTasks = [...tasks];
+    const index = updatedTasks.findIndex(task => task.name === name);
+    updatedTasks[index].checked = !updatedTasks[index].checked;
+    setTasks(updatedTasks);
+  };
+
+  const renderItem = ({ item, index }: { item: Task; index: number }) => (
+    <View style={styles.task}>
+      <CheckBox name={item.name} checked={item.checked} onPress={onPress} />
+      <Text style={styles.itemList}>{item.name}</Text>
+      <View style={styles.taskButtons}>
+        <TouchableOpacity onPress={() => handleEditTask(index)}>
+          <Text style={styles.editButton}>Edit</Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => handleDeleteTask(index)}>
+          <Text style={styles.deleteButton}>Delete</Text>
+        </TouchableOpacity>
+      </View>
+    </View>
+  );
+
   return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar
-        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-        backgroundColor={backgroundStyle.backgroundColor}
+    <View style={styles.container}>
+      <TextInput
+        style={styles.input}
+        editable={true}
+        placeholder='Enter task'
+        value={taskName}
+        onChangeText={text => setTaskName(text)}
       />
-      <ScrollView
-        contentInsetAdjustmentBehavior='automatic'
-        style={backgroundStyle}>
-        <Header />
-        <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-          }}>
-          <Section title='Step One'>
-            Edit <Text style={styles.highlight}>App.tsx</Text> to change this
-            screen and then come back to see your edits.
-          </Section>
-        </View>
-      </ScrollView>
-    </SafeAreaView>
+      <TouchableOpacity style={styles.addButton} onPress={handleAddTask}>
+        <Text style={styles.addButtonText}>
+          {editIndex !== -1 ? 'Update Task' : 'Add Task'}
+        </Text>
+      </TouchableOpacity>
+      <FlatList
+        data={tasks}
+        renderItem={renderItem}
+        keyExtractor={(item, index) => {
+          return index.toString() + item.name;
+        }}
+      />
+    </View>
   );
 }
