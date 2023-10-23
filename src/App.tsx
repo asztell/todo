@@ -1,13 +1,13 @@
 import React, { useState, useCallback } from 'react';
 import { FlatList, TextInput, View } from 'react-native';
-import { Button, Item, ItemType } from './components';
+import { Button, Task, TaskType } from './components';
 import { styles } from './App.styles';
 
-export type TaskType = { item: ItemType; index: number };
+export type RenderedTaskType = { item: TaskType; index: number };
 
 export function App(): JSX.Element {
   const [taskName, setTaskName] = useState('');
-  const [tasks, setTasks] = useState<ItemType[]>([]);
+  const [tasks, setTasks] = useState<TaskType[]>([]);
   const [editIndex, setEditIndex] = useState(-1);
 
   const handleAddTask = useCallback((): void => {
@@ -45,7 +45,7 @@ export function App(): JSX.Element {
     [setTasks, tasks],
   );
 
-  const onPress = useCallback(
+  const handleToggleChecked = useCallback(
     (name: string): void => {
       const updatedTasks = [...tasks];
       const index = updatedTasks.findIndex(task => task.name === name);
@@ -56,16 +56,16 @@ export function App(): JSX.Element {
   );
 
   const renderItem = useCallback(
-    ({ item, index }: TaskType): JSX.Element => (
-      <Item
-        item={item}
+    ({ item, index }: RenderedTaskType): JSX.Element => (
+      <Task
+        task={item}
         index={index}
-        onPress={onPress}
+        handleToggleChecked={handleToggleChecked}
         handleEditTask={handleEditTask}
         handleDeleteTask={handleDeleteTask}
       />
     ),
-    [handleDeleteTask, handleEditTask, onPress],
+    [handleDeleteTask, handleEditTask, handleToggleChecked],
   );
 
   const onChangeText = useCallback(
@@ -75,7 +75,7 @@ export function App(): JSX.Element {
     [setTaskName],
   );
 
-  const keyExtractor = useCallback((item: ItemType, index: number): string => {
+  const keyExtractor = useCallback((item: TaskType, index: number): string => {
     return index.toString() + item.name;
   }, []);
 

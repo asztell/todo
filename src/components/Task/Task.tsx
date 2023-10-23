@@ -1,29 +1,33 @@
 import React from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 import { CheckBox } from '../CheckBox';
-import { styles } from './Item.styles';
+import { styles } from './Task.styles';
 
-export type ItemType = { name: string; checked: boolean };
+export type TaskType = { name: string; checked: boolean };
 
-export type ItemProps = {
-  item: ItemType;
+export type TaskProps = {
+  task: TaskType;
   index: number;
-  onPress: (name: string) => void;
+  handleToggleChecked: (name: string) => void;
   handleEditTask: (index: number) => void;
   handleDeleteTask: (index: number) => void;
 };
 
-export function Item({
-  item,
+export function Task({
+  task,
   index,
-  onPress,
+  handleToggleChecked,
   handleEditTask,
   handleDeleteTask,
-}: ItemProps) {
+}: TaskProps) {
   return (
     <View style={styles.task}>
-      <CheckBox name={item.name} checked={item.checked} onPress={onPress} />
-      <Text style={styles.itemList}>{item.name}</Text>
+      <CheckBox
+        name={task.name}
+        checked={task.checked}
+        onPress={handleToggleChecked}
+      />
+      <Text style={styles.itemList}>{task.name}</Text>
       <View style={styles.taskButtons}>
         <TouchableOpacity onPress={() => handleEditTask(index)}>
           <Text style={styles.editButton}>Edit</Text>
