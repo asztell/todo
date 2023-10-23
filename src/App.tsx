@@ -13,10 +13,7 @@ export function App(): JSX.Element {
   const handleAddTask = useCallback((): void => {
     if (taskName) {
       if (editIndex !== -1) {
-        const updatedTasks = [...tasks] as Array<{
-          name: string;
-          checked: boolean;
-        }>;
+        const updatedTasks = [...tasks];
         updatedTasks[editIndex] = { name: taskName, checked: false };
         setTasks(updatedTasks);
         setEditIndex(-1);
