@@ -11,13 +11,17 @@ export function CheckBox({
   checked: boolean;
   onPress: (name: string) => void;
 }) {
+  function onIconPress(): void {
+    onPress(name);
+  }
+
   return (
     <RNECheckBox
       size={30}
       checked={checked}
       checkedColor={styles.checkedColor}
       uncheckedColor={styles.uncheckedColor}
-      onIconPress={() => onPress(name)}
+      onIconPress={onIconPress}
       // checkedTitle={name}
       // containerStyle={{ width: '75%' }}
       // onLongIconPress={() => console.log('onLongIconPress()')}
