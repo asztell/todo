@@ -1,9 +1,8 @@
 import React, { useState, useCallback } from 'react';
 import { FlatList, TextInput, View } from 'react-native';
-import { Button, Item } from './components';
+import { Button, Item, ItemType } from './components';
 import { styles } from './App.styles';
 
-export type ItemType = { name: string; checked: boolean };
 export type TaskType = { item: ItemType; index: number };
 
 export function App(): JSX.Element {

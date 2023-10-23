@@ -1,8 +1,9 @@
 import React from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 import { CheckBox } from '../CheckBox';
-import { ItemType } from '../../App';
 import { styles } from './Item.styles';
+
+export type ItemType = { name: string; checked: boolean };
 
 export type ItemProps = {
   item: ItemType;
