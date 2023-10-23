@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { CheckBox as RNECheckBox } from '@rneui/themed';
-import { styles } from './CheckBox.style';
+import { styles } from './CheckBox.styles';
 
 export function CheckBox({
   name,
@@ -11,9 +11,9 @@ export function CheckBox({
   checked: boolean;
   onPress: (name: string) => void;
 }) {
-  function onIconPress(): void {
+  const onIconPress = useCallback((): void => {
     onPress(name);
-  }
+  }, [name, onPress]);
 
   return (
     <RNECheckBox
