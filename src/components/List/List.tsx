@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import { Button, Task, TaskType } from '../../components';
+import { Button, Task, TaskType } from '..';
 import { styles } from './List.styles';
 
 export type RenderedTaskType = { item: TaskType; index: number };

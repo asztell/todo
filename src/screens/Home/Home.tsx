@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react';
-import { Text, TouchableOpacity, Button, View } from 'react-native';
+import { Text, Button, View } from 'react-native';
 import { styles } from './Home.styles';
 
 type HomeProps = {
