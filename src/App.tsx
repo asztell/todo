@@ -1,100 +1,78 @@
-import React, { useState, useCallback } from 'react';
-import { FlatList, TextInput, View } from 'react-native';
-import { Button, Task, TaskType } from './components';
-import { styles } from './App.styles';
+import 'react-native-gesture-handler';
+import React from 'react';
+import { View, Text, StyleSheet } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+// import { createNativeStackNavigator } from '@react-navigation/native-stack';
+// import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
+import { createDrawerNavigator } from '@react-navigation/drawer';
+import { Home, Lists } from './screens';
+// import { styles } from './App.styles';
 
-export type RenderedTaskType = { item: TaskType; index: number };
+// const Stack = createNativeStackNavigator();
+// const Tab = createMaterialTopTabNavigator();
+const Drawer = createDrawerNavigator();
+
+const profileStyle = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#F5FCFF',
+  },
+});
+
+function Profile() {
+  return (
+    <View style={profileStyle.container}>
+      <Text>Profile</Text>
+    </View>
+  );
+}
 
 export function App(): JSX.Element {
-  const [taskName, setTaskName] = useState('');
-  const [tasks, setTasks] = useState<TaskType[]>([]);
-  const [editIndex, setEditIndex] = useState(-1);
-
-  const handleAddTask = useCallback((): void => {
-    if (taskName) {
-      if (editIndex !== -1) {
-        const updatedTasks = [...tasks];
-        updatedTasks[editIndex] = { name: taskName, checked: false };
-        setTasks(updatedTasks);
-        setEditIndex(-1);
-      } else {
-        setTasks([...tasks, { name: taskName, checked: false }]);
-      }
-      setTaskName('');
-    }
-  }, [editIndex, taskName, tasks]);
-
-  const handleEditTask = useCallback(
-    (index: number): void => {
-      const taskToEdit = tasks[index];
-      setTaskName(taskToEdit.name);
-      setEditIndex(index);
-    },
-    [setEditIndex, setTaskName, tasks],
-  );
-
-  const handleDeleteTask = useCallback(
-    (index: number): void => {
-      const updatedTasks = [...tasks];
-      updatedTasks.splice(index, 1);
-      setTasks(updatedTasks);
-    },
-    [setTasks, tasks],
-  );
-
-  const handleToggleChecked = useCallback(
-    (name: string): void => {
-      const updatedTasks = [...tasks];
-      const index = updatedTasks.findIndex(task => task.name === name);
-      updatedTasks[index].checked = !updatedTasks[index].checked;
-      setTasks(updatedTasks);
-    },
-    [setTasks, tasks],
-  );
-
-  const renderItem = useCallback(
-    ({ item, index }: RenderedTaskType): JSX.Element => (
-      <Task
-        task={item}
-        index={index}
-        handleToggleChecked={handleToggleChecked}
-        handleEditTask={handleEditTask}
-        handleDeleteTask={handleDeleteTask}
-      />
-    ),
-    [handleDeleteTask, handleEditTask, handleToggleChecked],
-  );
-
-  const onChangeText = useCallback(
-    (text: string): void => {
-      setTaskName(text);
-    },
-    [setTaskName],
-  );
-
-  const keyExtractor = useCallback((item: TaskType, index: number): string => {
-    return index.toString() + item.name;
-  }, []);
-
-  // TODO: localize
-  const addButtonLabel = editIndex !== -1 ? 'Update Task' : 'Add Task';
-  const placeholder = 'Enter task';
-
   return (
-    <View style={styles.container}>
-      <TextInput
-        style={styles.input}
-        editable={true}
-        placeholder={placeholder}
-        value={taskName}
-        onChangeText={onChangeText}
-      />
-      <Button onPress={handleAddTask} label={addButtonLabel} />
-      <FlatList
-        data={tasks}
-        renderItem={renderItem}
-        keyExtractor={keyExtractor}
-      />
-    </View>
+    <NavigationContainer>
+      {/* <Stack.Navigator
+        screenOptions={{
+          headerStyle: {
+            backgroundColor: '#f4511e',
+          },
+          headerTintColor: '#fff',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
+        }}>
+        <Stack.Screen
+          name='Home'
+          component={Home}
+          options={{ title: 'Home title' }}
+        />
+        <Stack.Screen
+          name='Lists'
+          component={Lists}
+          options={{ title: 'Lists title' }}
+        />
+      </Stack.Navigator> */}
+      {/* <Tab.Navigator
+              screenOptions={{
+                tabBarActiveTintColor: '#821109',
+                tabBarLabelStyle: { fontSize: 16, color: '#fff' },
+                tabBarStyle: { backgroundColor: '#f4511e' },
+              }}>
+              <Tab.Screen name='Home' component={Home} />
+              <Tab.Screen name='Lists' component={Lists} />
+              <Tab.Screen name='Profile' component={Profile} />
+            </Tab.Navigator> */}
+      <Drawer.Navigator
+        screenOptions={{
+          drawerActiveTintColor: '#821109',
+          drawerLabelStyle: { fontSize: 16, color: '#fff' },
+          drawerStyle: { backgroundColor: '#f4511e' },
+        }}>
+        <Drawer.Screen name='Home' component={Home} />
+        <Drawer.Screen name='Lists' component={Lists} />
+        <Drawer.Screen name='Profile' component={Profile} />
+      </Drawer.Navigator>
+    </NavigationContainer>
   );
 }
