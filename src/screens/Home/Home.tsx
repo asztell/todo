@@ -10,7 +10,7 @@ export function Home(props: HomeProps): JSX.Element {
   const { navigation } = props;
 
   const handleNavigation = useCallback(() => {
-    navigation.navigate('List');
+    navigation.navigate('Lists');
   }, [navigation]);
 
   return (
