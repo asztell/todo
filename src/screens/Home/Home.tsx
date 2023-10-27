@@ -1,22 +1,32 @@
 import React, { useCallback } from 'react';
 import { Text, Button, View } from 'react-native';
+import { ScreenProps } from 'react-native-screens';
+import { SCREENS } from '../../constants';
 import { styles } from './Home.styles';
 
-type HomeProps = {
-  navigation: any;
-};
-
-export function Home(props: HomeProps): JSX.Element {
+export function Home(
+  props: ScreenProps & { navigation: { navigate: (arg0: string) => void } },
+): JSX.Element {
+  console.log(
+    'Home props',
+    JSON.stringify(
+      props,
+      (key, val) => {
+        return typeof val === 'function' ? val + '' : val;
+      },
+      4,
+    ),
+  );
   const { navigation } = props;
 
   const handleNavigation = useCallback(() => {
-    navigation.navigate('Lists');
+    navigation.navigate(SCREENS.Tasks);
   }, [navigation]);
 
   return (
-    <View style={styles.background}>
+    <View style={styles.container}>
       <Text>Home</Text>
-      <Button title='Go to Lists' onPress={handleNavigation} />
+      <Button title='Go to Tasks' onPress={handleNavigation} />
     </View>
   );
 }

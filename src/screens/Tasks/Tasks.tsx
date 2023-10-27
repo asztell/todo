@@ -1,6 +1,8 @@
 import React from 'react';
+import { View } from 'react-native';
 import { ScreenProps } from 'react-native-screens';
-import { Lists as ListsContent } from '../../components';
+import { TaskLists as TasksContent } from '../../components';
+import { styles } from './Tasks.styles';
 
 // type TabScreenProps = {
 //   navigation: {
@@ -54,7 +56,7 @@ console.log('');
 //   route: {...};
 // };
 
-export function Lists(props: ScreenProps): JSX.Element {
+export function Tasks(props: ScreenProps): JSX.Element {
   console.log(
     'Lists props',
     JSON.stringify(
@@ -65,5 +67,9 @@ export function Lists(props: ScreenProps): JSX.Element {
       4,
     ),
   );
-  return <ListsContent />;
+  return (
+    <View style={styles.container}>
+      <TasksContent />
+    </View>
+  );
 }

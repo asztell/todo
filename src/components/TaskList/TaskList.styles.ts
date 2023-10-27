@@ -1,8 +1,10 @@
 import { StyleSheet } from 'react-native';
 
 export const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#171d31',
+  input: {
+    color: 'white',
+    height: 40,
+    borderColor: 'gray',
+    borderWidth: 1,
   },
 });

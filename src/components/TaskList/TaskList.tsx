@@ -7,13 +7,13 @@ import {
   View,
 } from 'react-native';
 import { Button, Task, TaskType } from '..';
-import { styles } from './List.styles';
+import { styles } from './TaskList.styles';
 
 export type RenderedTaskType = { item: TaskType; index: number };
 
-type ListProps = {};
+type TaskListProps = {};
 
-export function List(props: ListProps): JSX.Element {
+export function TaskList(props: TaskListProps): JSX.Element {
   const [taskName, setTaskName] = useState('');
   const [tasks, setTasks] = useState<TaskType[]>([]);
   const [editIndex, setEditIndex] = useState(-1);
@@ -89,7 +89,8 @@ export function List(props: ListProps): JSX.Element {
   const placeholder = 'Enter task';
 
   return (
-    <View style={styles.container}>
+    // <View style={styles.container}>
+    <View style={{}}>
       <TextInput
         style={styles.input}
         editable={true}

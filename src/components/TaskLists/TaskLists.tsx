@@ -1,16 +1,16 @@
 import React from 'react';
 import { View } from 'react-native';
-import { List } from '../List';
+import { TaskList } from '../TaskList';
 // import { styles } from './Lists.styles';
 
-type ListsProps = {};
+type TaskListsProps = {};
 
-export function Lists(props: ListsProps): JSX.Element {
+export function TaskLists(props: TaskListsProps): JSX.Element {
   return (
     <View>
       {/* TODO: iterate from persistent state */}
       {/* TODO: show default screen when no lists */}
-      <List />
+      <TaskList />
     </View>
   );
 }
