@@ -6,8 +6,9 @@ export const styles = StyleSheet.create({
   statusBariOSPadding: {
     // backgroundColor: '#222',
     // backgroundColor: '#ba2e04',
+    flex: 1,
     backgroundColor: '#801e01',
-    height: APPBAR_HEIGHT,
+    // height: APPBAR_HEIGHT,
   },
   statusBar: {
     // backgroundColor: '#222',

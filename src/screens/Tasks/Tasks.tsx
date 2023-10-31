@@ -57,16 +57,16 @@ console.log('');
 // };
 
 export function Tasks(props: ScreenProps): JSX.Element {
-  console.log(
-    'Lists props',
-    JSON.stringify(
-      props,
-      (key, val) => {
-        return typeof val === 'function' ? val + '' : val;
-      },
-      4,
-    ),
-  );
+  // console.log(
+  //   'Lists props',
+  //   JSON.stringify(
+  //     props,
+  //     (key, val) => {
+  //       return typeof val === 'function' ? val + '' : val;
+  //     },
+  //     4,
+  //   ),
+  // );
   return (
     <View style={styles.container}>
       <TasksContent />

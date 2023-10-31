@@ -1,11 +1,6 @@
 import React, { useState, useCallback } from 'react';
-import {
-  FlatList,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import { FlatList, TextInput, View } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Button, Task, TaskType } from '..';
 import { styles } from './TaskList.styles';
 
@@ -18,6 +13,51 @@ export function TaskList(props: TaskListProps): JSX.Element {
   const [tasks, setTasks] = useState<TaskType[]>([]);
   const [editIndex, setEditIndex] = useState(-1);
 
+  function generateTaskIds() {
+    return Math.random().toString(10).substring(7) + '-' + Date.now();
+  }
+
+  const storeData = useCallback(
+    async (value: { name: string; checked: boolean }) => {
+      try {
+        const jsonValue = JSON.stringify(value);
+        const id = generateTaskIds();
+        await AsyncStorage.setItem(id, jsonValue);
+      } catch (e) {
+        console.log('storeData error', e);
+      }
+    },
+    [],
+  );
+
+  const getAllData = useCallback(async () => {
+    try {
+      const keys = await AsyncStorage.getAllKeys();
+      const items = await AsyncStorage.multiGet(keys);
+      console.log('getAllData', items);
+      const parsedItems = items.map(item => JSON.parse(item[1] || 'null'));
+      // console.log('getAllData', parsedItems);
+      return parsedItems;
+      // setTasks(parsedItems);
+    } catch (e) {
+      console.log('getAllData error', e);
+    }
+  }, []);
+
+  const getData = useCallback(async (key: string) => {
+    try {
+      const jsonValue = await AsyncStorage.getItem(key);
+      return jsonValue != null ? JSON.parse(jsonValue) : null;
+    } catch (e) {
+      console.log('getData error', e);
+    }
+  }, []);
+
+  const handleGetData = useCallback(() => {
+    const data = getAllData();
+    console.log('handleGetData', data);
+  }, [getAllData]);
+
   const handleAddTask = useCallback((): void => {
     if (taskName) {
       if (editIndex !== -1) {
@@ -27,10 +67,11 @@ export function TaskList(props: TaskListProps): JSX.Element {
         setEditIndex(-1);
       } else {
         setTasks([...tasks, { name: taskName, checked: false }]);
+        storeData({ name: taskName, checked: false });
       }
       setTaskName('');
     }
-  }, [editIndex, taskName, tasks]);
+  }, [editIndex, storeData, taskName, tasks]);
 
   const handleEditTask = useCallback(
     (index: number): void => {
@@ -95,6 +136,7 @@ export function TaskList(props: TaskListProps): JSX.Element {
         style={styles.input}
         editable={true}
         placeholder={placeholder}
+        placeholderTextColor={'#bbb'}
         value={taskName}
         onChangeText={onChangeText}
       />
@@ -104,6 +146,7 @@ export function TaskList(props: TaskListProps): JSX.Element {
         renderItem={renderItem}
         keyExtractor={keyExtractor}
       />
+      <Button onPress={handleGetData} label='Get Storage' />
     </View>
   );
 }
